@@ -252,6 +252,15 @@ trait TWriter
 
     public function removeAll(): bool
     {
-        return $this->_writeConn->flushDB();
+        $ret = $this->_writeConn->flushDB();
+
+        if ($ret === false) {
+
+            $this->_assertConnected();
+
+            return false;
+        }
+
+        return $ret;
     }
 }
