@@ -17,8 +17,7 @@
         "source" : "https://github.com/fenying/caphe/"
     },
     "require": {
-        "php": ">=7.0.0",
-        "phpunit/phpunit": "^6.3"
+        "php": ">=7.0.0"
     },
     "authors" : [{
             "name" : "Angus.Fenying",
@@ -45,5 +44,8 @@
         "ext-redis": "For using Redis driver",
         "ext-apcu": "For using APCu driver",
         "ext-memcache": "For using Memcache driver"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.3"
     }
 }
