@@ -1,100 +1,563 @@
 <?php
 /**
  * File: apcu.php
- * Created Date: 2017年6月1日 下午4:32:07
+ * Created Date: 2017-08-09 17:51:23
  */
 declare (strict_types = 1);
 
-require  __DIR__ . '/../vendor/autoload.php';
+namespace Test\Caphe;
 
-function testAPCu() {
+require __DIR__ . '/../vendor/autoload.php';
 
-    $connection = \Caphe\Driver\APCu\Connection::connect();
+use PHPUnit\Framework\TestCase;
 
-    $reader = $connection->getReader();
+use \Caphe\Driver\APCu as Driver;
 
-    $writer = $connection->getWriter();
+/**
+ * For CLI settings.
+ */
+ini_set(
+    'apc.use_request_time',
+    '0'
+);
 
-    $writer->removeAll();
+class APCuTest extends TestCase
+{
+    /**
+     * @return \Caphe\IClient
+     */
+    protected function __getClient()
+    {
+        return Driver\ClientProvider::createClient([]);
+    }
 
-    echo '# 1. Testing Caphe driver APCu:', PHP_EOL;
+    use APCuTestSetAndGet;
+    use APCuTestSetAndGetWithNamespace;
+    use APCuTestSetAndGetWithExpires;
 
-    # First roll
+    use APCuTestSetAndGetInt;
+    use APCuTestSetAndGetIntWithNamespace;
+    use APCuTestSetAndGetIntWithExpires;
 
-    echo PHP_EOL, '## 1.1. Testing add with not existing key', PHP_EOL, PHP_EOL;
+    use APCuTestSetAndGetFloat;
+    use APCuTestSetAndGetFloatWithNamespace;
+    use APCuTestSetAndGetFloatWithExpires;
 
-    echo 'addInt        "/test/integer" -> ', $writer->addInt('/test/integer', 1123) ? 'OK' : 'Failed', PHP_EOL;
+    use APCuTestExists;
+    use APCuTestExistsWithNamespace;
 
-    echo 'getInt        "/test/integer" -> ', $reader->getInt('/test/integer'), PHP_EOL;
-
-    echo 'addString     "/test/string"  -> ', $writer->addString('/test/string', 'this is a string') ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getString     "/test/string"  -> ', $reader->getString('/test/string'), PHP_EOL;
-
-    echo 'addFloat      "/test/float"   -> ', $writer->addFloat('/test/float', 1.4) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getFloat      "/test/float"   -> ', $reader->getFloat('/test/float'), PHP_EOL;
-
-    echo 'addAny        "/test/array"   -> ', $writer->add('/test/array', [1, 2, 3, 4, '5']) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getAny        "/test/array"   -> ', json_encode($reader->get('/test/array')), PHP_EOL;
-
-    # Second roll
-
-    echo PHP_EOL, '## 1.2. Testing set', PHP_EOL, PHP_EOL;
-
-    echo 'setInt        "/test/integer" -> ', $writer->setInt('/test/integer', 5555) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getInt        "/test/integer" -> ', $reader->getInt('/test/integer'), PHP_EOL;
-
-    echo 'setString     "/test/string"  -> ', $writer->setString('/test/string', 'this is a new string') ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getString     "/test/string"  -> ', $reader->getString('/test/string'), PHP_EOL;
-
-    echo 'setFloat      "/test/float"   -> ', $writer->setFloat('/test/float', 555.2) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getFloat      "/test/float"   -> ', $reader->getFloat('/test/float'), PHP_EOL;
-
-    echo 'setAny        "/test/array"   -> ', $writer->set('/test/array', [7, 6, 5, 4, ['f']]) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getAny        "/test/array"   -> ', json_encode($reader->get('/test/array')), PHP_EOL;
-
-    # Third roll
-
-    echo PHP_EOL, '## 1.3. Testing add with existing key', PHP_EOL, PHP_EOL;
-
-    echo 'addInt        "/test/integer" -> ', $writer->addInt('/test/integer', 1123) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getInt        "/test/integer" -> ', $reader->getInt('/test/integer'), PHP_EOL;
-
-    echo 'addString     "/test/string"  -> ', $writer->addString('/test/string', 'this is a string') ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getString     "/test/string"  -> ', $reader->getString('/test/string'), PHP_EOL;
-
-    echo 'addFloat      "/test/float"   -> ', $writer->addFloat('/test/float', 1.4) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getFloat      "/test/float"   -> ', $reader->getFloat('/test/float'), PHP_EOL;
-
-    echo 'addAny        "/test/array"   -> ', $writer->add('/test/array', [1, 2, 3, 4, '5']) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getAny        "/test/array"   -> ', json_encode($reader->get('/test/array')), PHP_EOL;
-
-    # Forth roll
-
-    echo PHP_EOL, '## 1.4. Testing CAS with equal value', PHP_EOL, PHP_EOL;
-
-    echo 'casInt        "/test/integer" -> ', $writer->cas('/test/integer', 5555, 666) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getInt        "/test/integer" -> ', $reader->getInt('/test/integer'), PHP_EOL;
-
-    # Fifth roll
-
-    echo PHP_EOL, '## 1.5. Testing CAS with not equal value', PHP_EOL, PHP_EOL;
-
-    echo 'casInt        "/test/integer" -> ', $writer->cas('/test/integer', 5555, 666) ? 'OK' : 'Failed', PHP_EOL;
-
-    echo 'getInt        "/test/integer" -> ', $reader->getInt('/test/integer'), PHP_EOL;
-
+    use APCuTestDelete;
+    use APCuTestDeleteWithNamespace;
 }
 
-testAPCu();
+/**
+ * Test for Reader::get and Writer::set
+ */
+trait APCuTestSetAndGet
+{
+    public function data_Set(): array
+    {
+        return [
+            ['hello', 'hello'],
+            ['hi', 321],
+            ['nono', ['a']],
+            ['test', 5.1]
+        ];
+    }
+
+    /**
+     * @dataProvider data_Set
+     */
+    public function testSet(string $key, $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->set($key, $value)
+        );
+    }
+
+    /**
+     * @dataProvider data_Set
+     * @depends testSet
+     */
+    public function testGet(string $key, $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            $value,
+            $connection->get($key)
+        );
+    }
+}
+
+/**
+ * Test for Reader::getInt and Writer::setInt, with expires parameter.
+ */
+trait APCuTestSetAndGetWithExpires
+{
+    public function data_SetWithExpires(): array
+    {
+        return [
+            ['any/exp/1', 'a123', 1],
+            ['any/exp/2', 321, 2],
+            ['any/exp/4', [5.5555], 4]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetWithExpires
+     */
+    public function testSetWithExpires(
+        string $key,
+        $value,
+        int $expires
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->set(
+                $key,
+                $value,
+                $expires
+            )
+        );
+
+        sleep(intval($expires / 2));
+
+        $this->assertEquals(
+            $value,
+            $connection->get($key)
+        );
+
+        sleep(intval(round($expires / 2 + 1)));
+
+        $this->assertEquals(
+            null,
+            $connection->get($key, null)
+        );
+    }
+}
+
+/**
+ * Test for Reader::nsGet and Writer::nsGet
+ */
+trait APCuTestSetAndGetWithNamespace
+{
+    public function data_SetAndGetWithNamespace(): array
+    {
+        return [
+            ['test', 'a', 'hello'],
+            ['test', 'b', 321],
+            ['test', 'c', ['a']],
+            ['test', 'd', 5.1]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetAndGetWithNamespace
+     */
+    public function testSetWithNamespace(string $ns, string $key, $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->nsSet(
+                $ns,
+                $key,
+                $value
+            )
+        );
+    }
+
+    /**
+     * @dataProvider data_SetAndGetWithNamespace
+     * @depends testSetWithNamespace
+     */
+    public function testGetWithNamespace(string $ns, string $key, $value)
+    {
+        $this->assertEquals(
+            $value,
+            $this->__getClient()->nsGet($ns, $key)
+        );
+    }
+}
+
+/**
+ * Test for Reader::getInt and Writer::setInt, with expires parameter.
+ */
+trait APCuTestSetAndGetIntWithExpires
+{
+    public function data_SetAndGetIntWithExpires(): array
+    {
+        return [
+            ['int/exp/1', 123, 1],
+            ['int/exp/2', 321, 2],
+            ['int/exp/4', 5555, 4]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetAndGetIntWithExpires
+     */
+    public function testSetAndGetIntWithExpires(
+        string $key,
+        int $value,
+        int $expires
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->setInt(
+                $key,
+                $value,
+                $expires
+            )
+        );
+
+        sleep(intval($expires / 2));
+
+        $this->assertEquals(
+            $value,
+            $connection->getInt($key)
+        );
+
+        sleep(intval(round($expires / 2 + 1)));
+
+        $this->assertEquals(
+            null,
+            $connection->getInt($key, null)
+        );
+    }
+}
+
+trait APCuTestSetAndGetInt
+{
+    public function data_SetInt(): array
+    {
+        return [
+            ['int/a', 123],
+            ['int/b', 321],
+            ['int/c', 5555],
+            ['int/d', 0]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetInt
+     */
+    public function testSetInt(string $key, int $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->setInt($key, $value)
+        );
+    }
+
+    /**
+     * @dataProvider data_SetInt
+     * @depends testSetInt
+     */
+    public function testGetInt(string $key, int $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            $value,
+            $connection->getInt($key)
+        );
+    }
+}
+
+trait APCuTestSetAndGetIntWithNamespace
+{
+    public function data_SetIntWithNamespace(): array
+    {
+        return [
+            ['test', 'hello', 123],
+            ['test', 'hi', 321],
+            ['test', 'nono', 5555],
+            ['test', 'test', 0]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetIntWithNamespace
+     */
+    public function testSetIntWithNamespace(
+        string $ns,
+        string $key,
+        int $value
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->nsSetInt(
+                $ns,
+                $key,
+                $value
+            )
+        );
+    }
+
+    /**
+     * @dataProvider data_SetIntWithNamespace
+     * @depends testSetIntWithNamespace
+     */
+    public function testGetIntWithNamespace(
+        string $ns,
+        string $key,
+        int $value
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            $value,
+            $connection->nsGetInt($ns, $key)
+        );
+    }
+}
+
+trait APCuTestSetAndGetFloat
+{
+    public function data_SetFloat(): array
+    {
+        return [
+            ['float/a', 123.5],
+            ['float/b', 321.5],
+            ['float/c', 5555.5],
+            ['float/d', 0.5]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetFloat
+     */
+    public function testSetFloat(string $key, float $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->setFloat($key, $value)
+        );
+    }
+
+    /**
+     * @dataProvider data_SetFloat
+     * @depends testSetFloat
+     */
+    public function testGetFloat(string $key, float $value)
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            $value,
+            $connection->getFloat($key)
+        );
+    }
+}
+
+trait APCuTestSetAndGetFloatWithNamespace
+{
+    public function data_SetFloatWithNamespace(): array
+    {
+        return [
+            ['test', 'float/a', 123.5],
+            ['test', 'float/b', 321.5],
+            ['test', 'float/c', 5555.5],
+            ['test', 'float/d', 0.5]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetFloatWithNamespace
+     */
+    public function testSetFloatWithNamespace(
+        string $ns,
+        string $key,
+        float $value
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            true,
+            $connection->nsSetFloat(
+                $ns,
+                $key,
+                $value
+            )
+        );
+    }
+
+    /**
+     * @dataProvider data_SetFloatWithNamespace
+     * @depends testSetFloatWithNamespace
+     */
+    public function testGetFloatWithNamespace(
+        string $ns,
+        string $key,
+        float $value
+    )
+    {
+        $connection = $this->__getClient();
+
+        $this->assertEquals(
+            $value,
+            $connection->nsGetFloat($ns, $key)
+        );
+    }
+}
+
+trait APCuTestSetAndGetFloatWithExpires
+{
+    public function data_SetFloatWithExpires(): array
+    {
+        return [
+            ['float/exp/1', 123.5, 1],
+            ['float/exp/2', 321.123, 2],
+            ['float/exp/4', 5555.44, 4]
+        ];
+    }
+
+    /**
+     * @dataProvider data_SetFloatWithExpires
+     */
+    public function testSetFloatWithExpires(
+        string $key,
+        int $value,
+        int $expires
+    )
+    {
+        $connection = $this->__getClient();
+
+        $connection->setFloat($key, $value, $expires);
+
+        sleep(intval($expires / 2));
+
+        $this->assertEquals(
+            $value,
+            $connection->getFloat($key)
+        );
+
+        sleep(intval(round($expires / 2 + 1)));
+
+        $this->assertEquals(
+            null,
+            $connection->getFloat($key, null)
+        );
+    }
+}
+
+trait APCuTestExists
+{
+    public function data_Exists(): array
+    {
+        return [
+            ['int/a'],
+            ['int/b'],
+            ['int/c'],
+            ['int/d']
+        ];
+    }
+
+    /**
+     * @dataProvider data_Exists
+     * @depends testSetInt
+     */
+    public function testExists(string $key)
+    {
+        $this->assertEquals(
+            true,
+            $this->__getClient()->exists($key)
+        );
+    }
+}
+
+trait APCuTestExistsWithNamespace
+{
+    public function data_ExistsWithNamespace(): array
+    {
+        return [
+            ['test', 'hello'],
+            ['test', 'hi'],
+            ['test', 'nono'],
+            ['test', 'test']
+        ];
+    }
+
+    /**
+     * @dataProvider data_ExistsWithNamespace
+     * @depends testSetIntWithNamespace
+     */
+    public function testExistsWithNamespace(string $ns, string $key)
+    {
+        $this->assertEquals(
+            true,
+            $this->__getClient()->nsExists($ns, $key)
+        );
+    }
+}
+
+trait APCuTestDelete
+{
+    public function data_Delete(): array
+    {
+        return [
+            ['hello'],
+            ['hi'],
+            ['nono'],
+            ['test']
+        ];
+    }
+
+    /**
+     * @dataProvider data_Delete
+     * @depends testGet
+     */
+    public function testDelete(string $key)
+    {
+        $this->assertEquals(
+            true,
+            $this->__getClient()->remove($key)
+        );
+    }
+}
+
+trait APCuTestDeleteWithNamespace
+{
+    public function data_NsDelete(): array
+    {
+        return [
+            ['test', 'hello'],
+            ['test', 'hi'],
+            ['test', 'nono'],
+            ['test', 'test']
+        ];
+    }
+
+    /**
+     * @dataProvider data_NsDelete
+     * @depends testGetIntWithNamespace
+     */
+    public function testNsDelete(string $ns, string $key)
+    {
+        $this->assertEquals(
+            true,
+            $this->__getClient()->nsRemove($ns, $key)
+        );
+    }
+}
