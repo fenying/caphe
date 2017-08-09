@@ -13,14 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 use \Caphe\Driver\APCu as Driver;
 
-/**
- * For CLI settings.
- */
-ini_set(
-    'apc.use_request_time',
-    '0'
-);
-
 class APCuTest extends TestCase
 {
     /**
@@ -66,7 +58,12 @@ trait APCuTestSetAndGet
     }
 
     /**
+     * Test method set with any value.
+     *
      * @dataProvider data_Set
+     *
+     * @param string $key
+     * @param mixed $value
      */
     public function testSet(string $key, $value)
     {
