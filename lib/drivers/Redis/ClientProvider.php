@@ -32,7 +32,7 @@ class ClientProvider implements IClientProvider
         }
         elseif (isset($config['reader'], $config['writer'])) {
             
-            $readConn = self::_pickConnection($config['reader']);
+            $readConn = self::_pickConnection($config['reader'], true);
             $writeConn = self::_pickConnection($config['writer']);
             return new Client($readConn, $writeConn);
         }
@@ -126,7 +126,7 @@ ERROR
             }
         }
 
-        self::_initConnection($ret);
+        $readOnly || self::_initConnection($ret);
         self::$_conn_pool[$serverName] = $ret;
 
         return $ret;
