@@ -1,7 +1,7 @@
 <?php
 /**
- * File: apcu.php
- * Created Date: 2017-08-09 17:51:23
+ * File: redis.php
+ * Created Date: 2017年5月16日 下午4:16:07
  */
 declare (strict_types = 1);
 
@@ -11,17 +11,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
 
-use \Caphe\Driver\APCu as Driver, \Caphe\IClient;
+use \Caphe\Driver\Redis as Driver, \Caphe\IClient;
 
 require __DIR__ . '/partials.normal.php';
 require __DIR__ . '/partials.namespace.php';
 require __DIR__ . '/partials.initial.php';
 
-ini_set('apc.use_request_time', '0');
-
-class APCuTest extends TestCase
+class RedisRWSTest extends TestCase
 {
-    use TACPu_FullClient;
+    use TRedis_RWSClient;
 
     use TDriver_CleanUp;
     use TDriver_MethodRemoveAll;
@@ -47,7 +45,7 @@ class APCuTest extends TestCase
     use TDriver_NamespaceMethodAddString;
 }
 
-trait TACPu_FullClient {
+trait TRedis_RWSClient {
 
     /**
      * @return IClient
@@ -55,7 +53,16 @@ trait TACPu_FullClient {
     protected function __getClient()
     {
         return Driver\ClientProvider::createClient([
-            'forceCLI' => true
+            'reader' => [
+                'host' => '127.0.0.1',
+                'port' => 6677,
+                'persist' => true
+            ],
+            'writer' => [
+                'host' => '127.0.0.1',
+                'port' => 6379,
+                'persist' => true
+            ]
         ]);
     }
 }

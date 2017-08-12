@@ -77,7 +77,12 @@ class ClientProvider implements IClientProvider
 
     protected static function __fixTimeForCLI(bool $force = false)
     {
-        if (!isset($_POST) || $force) {
+        if (isset($_POST) && !$force) {
+
+            return;
+        }
+
+        if (ini_get('apc.use_request_time') != 0) {
 
             ini_set(
                 'apc.use_request_time',

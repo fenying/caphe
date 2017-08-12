@@ -1,5 +1,5 @@
+#!/usr/bin/env php
 <?php
-
 require __DIR__ . '/../vendor/autoload.php';
 
 use Caphe\Driver\Redis as Cache;
@@ -22,7 +22,12 @@ function redisExec($client, $action, ...$args) {
 try {
 
     $conn = Cache\ClientProvider::createClient([
-        'server' => [
+        'reader' => [
+            'port' => 6677,
+            'host' => '127.0.0.1',
+            'persist' => false
+        ],
+        'writer' => [
             'port' => 6379,
             'host' => '127.0.0.1',
             'persist' => false
