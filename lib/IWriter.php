@@ -110,6 +110,82 @@ interface IWriter extends IBaseClient
     public function set(string $key, $val, int $ttl = null): bool;
 
     /**
+     * To set the multi-items in a hash table.
+     *
+     * The value of item will be serialized by PHP, before being stored
+     * into cache.
+     *
+     * Thus only methods **get** and **getMulti** can read this item properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function setMulti(array $items, int $ttl = null): bool;
+
+    /**
+     * To set the multi-string-items in a hash table.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function setMultiString(array $items, int $ttl = null): bool;
+
+    /**
+     * To set the multi-integer-items in a hash table.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function setMultiInt(array $items, int $ttl = null): bool;
+
+    /**
+     * To set the multi-float-items in a hash table.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function setMultiFloat(array $items, int $ttl = null): bool;
+
+    /**
      * To set the value of an item as a raw string.
      *
      * The value must be string so it will be written into cache directly,

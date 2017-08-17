@@ -50,9 +50,81 @@ trait TReader
 
             $ret = [];
 
-            foreach ($keys as  $key) {
+            foreach ($keys as $key) {
 
-                $ret[$key] = $result[$keys] ?? $default;
+                $ret[$key] = $result[$key] ?? $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function getMultiString(array $keys, string $default = null): array
+    {
+        $result = apcu_fetch($keys, $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = isset($result[$key]) ? "{$result[$key]}" : $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function getMultiFloat(array $keys, float $default = null): array
+    {
+        $result = apcu_fetch($keys, $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = isset($result[$key]) ? (float)$result[$key] : $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function getMultiInt(array $keys, int $default = null): array
+    {
+        $result = apcu_fetch($keys, $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = isset($result[$key]) ? (int)$result[$key] : $default;
             }
         }
         else {

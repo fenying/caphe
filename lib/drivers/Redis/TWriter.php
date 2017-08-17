@@ -128,6 +128,115 @@ trait TWriter
         return false;
     }
 
+    public function setMulti(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex($key, $ttl, serialize($val));
+            }
+
+            $conn->exec();
+        }
+        else {
+
+            foreach ($items as $key => &$val) {
+
+                $val = serialize($val);
+            }
+
+            $this->_writeConn->mSet($items);
+        }
+
+        return true;
+    }
+
+    public function setMultiString(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex($key, $ttl, $val);
+            }
+
+            $conn->exec();
+        }
+        else {
+
+            $this->_writeConn->mSet($items);
+        }
+
+        return true;
+    }
+
+    public function setMultiInt(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex($key, $ttl, $val);
+            }
+
+            $conn->exec();
+        }
+        else {
+
+            $this->_writeConn->mSet($items);
+        }
+
+        return true;
+    }
+
+    public function setMultiFloat(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex($key, $ttl, $val);
+            }
+
+            $conn->exec();
+        }
+        else {
+
+            $this->_writeConn->mSet($items);
+        }
+
+        return true;
+    }
+
     public function setString(
         string $key,
         string $val,

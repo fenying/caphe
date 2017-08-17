@@ -14,73 +14,105 @@ trait TWriter
     public function add(
         string $key,
         $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_add($key, $val, $ttl);
+        return apcu_add($key, $val, $ttl ?? 0);
     }
 
     public function addString(
         string $key,
         string $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_add($key, $val, $ttl);
+        return apcu_add($key, $val, $ttl ?? 0);
     }
 
     public function addInt(
         string $key,
         int $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_add($key, $val, $ttl);
+        return apcu_add($key, $val, $ttl ?? 0);
     }
 
     public function addFloat(
         string $key,
         float $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_add($key, $val, $ttl);
+        return apcu_add($key, $val, $ttl ?? 0);
+    }
+
+    public function setMulti(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        return count(apcu_store($items, null, $ttl ?? 0)) === 0;
+    }
+
+    public function setMultiString(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        return count(apcu_store($items, null, $ttl ?? 0)) === 0;
+    }
+
+    public function setMultiFloat(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        return count(apcu_store($items, null, $ttl ?? 0)) === 0;
+    }
+
+    public function setMultiInt(
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        return count(apcu_store($items, null, $ttl ?? 0)) === 0;
     }
 
     public function set(
         string $key,
         $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_store($key, $val, $ttl);
+        return apcu_store($key, $val, $ttl ?? 0);
     }
 
     public function setString(
         string $key,
         string $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_store($key, $val, $ttl);
+        return apcu_store($key, $val, $ttl ?? 0);
     }
 
     public function setInt(
         string $key,
         int $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_store($key, $val, $ttl);
+        return apcu_store($key, $val, $ttl ?? 0);
     }
 
     public function setFloat(
         string $key,
         float $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
-        return apcu_store($key, $val, $ttl);
+        return apcu_store($key, $val, $ttl ?? 0);
     }
 
     public function cas(

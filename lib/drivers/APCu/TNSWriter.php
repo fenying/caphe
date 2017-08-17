@@ -13,13 +13,13 @@ trait TNSWriter
         string $ns,
         string $key,
         $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_add(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -27,13 +27,13 @@ trait TNSWriter
         string $ns,
         string $key,
         string $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_add(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -41,13 +41,13 @@ trait TNSWriter
         string $ns,
         string $key,
         int $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_add(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -55,13 +55,13 @@ trait TNSWriter
         string $ns,
         string $key,
         float $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_add(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -69,13 +69,13 @@ trait TNSWriter
         string $ns,
         string $key,
         $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_store(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -83,13 +83,13 @@ trait TNSWriter
         string $ns,
         string $key,
         string $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_store(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -97,13 +97,13 @@ trait TNSWriter
         string $ns,
         string $key,
         int $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_store(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 
@@ -111,13 +111,13 @@ trait TNSWriter
         string $ns,
         string $key,
         float $val,
-        int $ttl = 0
+        int $ttl = null
     ): bool
     {
         return apcu_store(
             "{$this->_nsGetNSLock($ns)}/{$key}",
             $val,
-            $ttl
+            $ttl ?? 0
         );
     }
 

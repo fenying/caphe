@@ -2,7 +2,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Caphe\Driver\Redis as Cache;
+use Caphe\Driver\APCu as Cache;
 
 /**
  * Execute Redis client methods and print the results.
@@ -11,7 +11,7 @@ use Caphe\Driver\Redis as Cache;
  * @param string $action
  * @param array ...$args
  */
-function redisExec($client, $action, ...$args) {
+function cacheExec($client, $action, ...$args) {
     echo $action,
     '(',
     substr(json_encode($args), 1, -1),
@@ -34,53 +34,97 @@ try {
         ]
     ]);
 
-    redisExec($conn, 'removeAll');
-    redisExec($conn, 'set', 'a', 'fff');
-    redisExec($conn, 'add', 'a', 'ccc');
-    redisExec($conn, 'get', 'a');
-    redisExec($conn, 'add', 'b', 'ccc');
-    redisExec($conn, 'add', 'c', 'aac');
+    cacheExec($conn, 'removeAll');
+    cacheExec($conn, 'set', 'a', 'fff');
+    cacheExec($conn, 'add', 'a', 'ccc');
+    cacheExec($conn, 'get', 'a');
+    cacheExec($conn, 'add', 'b', 'ccc');
+    cacheExec($conn, 'add', 'c', 'aac');
 
-    redisExec($conn, 'getMulti', [
+    cacheExec($conn, 'getMulti', [
         'a', 'b', 'c'
     ]);
 
-    redisExec($conn, 'remove', 'a');
-    redisExec($conn, 'remove', 'b');
-    redisExec($conn, 'remove', 'c');
+    cacheExec($conn, 'setMulti', [
+        'a' => 123,
+        'b' => 'hello',
+        'c' => true
+    ]);
 
-    redisExec($conn, 'set', 'a', 1);
-    redisExec($conn, 'set', 'b', 2);
-    redisExec($conn, 'setInt', 'c', 3);
-    redisExec($conn, 'cas', 'c', 3, 5);
-
-    redisExec($conn, 'getInt', 'c');
-
-    redisExec($conn, 'removeMulti', [
+    cacheExec($conn, 'getMulti', [
         'a', 'b', 'c'
     ]);
 
-    redisExec($conn, 'nsSet', 'users', 'Angus', [
+    cacheExec($conn, 'setMultiString', [
+        'a' => '123',
+        'b' => 'hello',
+        'c' => 'true'
+    ]);
+
+    cacheExec($conn, 'getMultiString', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'setMultiInt', [
+        'a' => 5,
+        'b' => 1,
+        'c' => 4
+    ]);
+
+    cacheExec($conn, 'getMultiInt', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'setMultiFloat', [
+        'a' => 5.6,
+        'b' => 1.5,
+        'c' => 4.9
+    ]);
+
+    cacheExec($conn, 'getMultiFloat', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'getMultiInt', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'remove', 'a');
+    cacheExec($conn, 'remove', 'b');
+    cacheExec($conn, 'remove', 'c');
+
+    cacheExec($conn, 'set', 'a', 1);
+    cacheExec($conn, 'set', 'b', 2);
+    cacheExec($conn, 'setInt', 'c', 3);
+    cacheExec($conn, 'cas', 'c', 3, 5);
+
+    cacheExec($conn, 'getInt', 'c');
+
+    cacheExec($conn, 'removeMulti', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'nsSet', 'users', 'Angus', [
         'age' => 23
     ]);
 
-    redisExec($conn, 'nsGet', 'users', 'Angus');
+    cacheExec($conn, 'nsGet', 'users', 'Angus');
 
-    redisExec($conn, 'nsSetInt', 'test', 'a', 3);
+    cacheExec($conn, 'nsSetInt', 'test', 'a', 3);
 
-    redisExec($conn, 'nsGetInt', 'test', 'a');
+    cacheExec($conn, 'nsGetInt', 'test', 'a');
 
-    redisExec($conn, 'nsIncrease', 'test', 'a');
+    cacheExec($conn, 'nsIncrease', 'test', 'a');
 
-    redisExec($conn, 'nsGetInt', 'test', 'a');
+    cacheExec($conn, 'nsGetInt', 'test', 'a');
 
-    redisExec($conn, 'nsCAS', 'test', 'a', 4, 15);
+    cacheExec($conn, 'nsCAS', 'test', 'a', 4, 15);
 
-    redisExec($conn, 'nsGetInt', 'test', 'a');
+    cacheExec($conn, 'nsGetInt', 'test', 'a');
 
-    redisExec($conn, 'nsDecrease', 'test', 'a');
+    cacheExec($conn, 'nsDecrease', 'test', 'a');
 
-    redisExec($conn, 'nsGetInt', 'test', 'a');
+    cacheExec($conn, 'nsGetInt', 'test', 'a');
 
 }
 catch (\Exception $e) {

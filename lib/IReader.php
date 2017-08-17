@@ -65,6 +65,42 @@ interface IReader extends IBaseClient
     public function getMulti(array $keys, $default = null): array;
 
     /**
+     * Get values of multi-string-items into an array of PHP value, from cache.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param array $keys       The keys of items to get
+     * @param mixed $default    The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function getMultiString(array $keys, string $default = null): array;
+
+    /**
+     * Get values of multi-integer-items into an array of PHP value, from cache.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param array $keys       The keys of items to get
+     * @param mixed $default    The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function getMultiInt(array $keys, int $default = null): array;
+
+    /**
+     * Get values of multi-float-items into an array of PHP value, from cache.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param array $keys       The keys of items to get
+     * @param mixed $default    The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function getMultiFloat(array $keys, float $default = null): array;
+
+    /**
      * Get an item as an integer value, from a cache namespace.
      * 
      * @param string $ns        The namespace of item

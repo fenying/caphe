@@ -88,4 +88,85 @@ trait TReader
 
         return $ret;
     }
+
+    public function getMultiString(array $keys, string $default = null): array
+    {
+        $result = $this->_readConn->mGet($keys);
+
+        $ret = [];
+
+        if (is_array($result)) {
+
+            foreach ($result as $index => $val) {
+
+                $ret[$keys[$index]] = ($val === false) ?
+                    $default : $val;
+            }
+        }
+        else {
+
+            $this->_assertConnected();
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function getMultiInt(array $keys, int $default = null): array
+    {
+        $result = $this->_readConn->mGet($keys);
+
+        $ret = [];
+
+        if (is_array($result)) {
+
+            foreach ($result as $index => $val) {
+
+                $ret[$keys[$index]] = ($val === false) ?
+                    $default : (int)$val;
+            }
+        }
+        else {
+
+            $this->_assertConnected();
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function getMultiFloat(array $keys, float $default = null): array
+    {
+        $result = $this->_readConn->mGet($keys);
+
+        $ret = [];
+
+        if (is_array($result)) {
+
+            foreach ($result as $index => $val) {
+
+                $ret[$keys[$index]] = ($val === false) ?
+                    $default : (float)$val;
+            }
+        }
+        else {
+
+            $this->_assertConnected();
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        return $ret;
+    }
 }
