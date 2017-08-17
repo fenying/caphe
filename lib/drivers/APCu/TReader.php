@@ -34,7 +34,7 @@ trait TReader
     {
         $ret = apcu_fetch($key, $success);
 
-        return $success && is_string($ret) ? $ret : $default;
+        return $success ? (string)$ret : $default;
     }
 
     public function exists(string $key): bool
@@ -76,7 +76,7 @@ trait TReader
 
             foreach ($keys as $key) {
 
-                $ret[$key] = isset($result[$key]) ? "{$result[$key]}" : $default;
+                $ret[$key] = isset($result[$key]) ? (string)$result[$key] : $default;
             }
         }
         else {

@@ -85,7 +85,43 @@ try {
         'a', 'b', 'c'
     ]);
 
-    cacheExec($conn, 'getMultiInt', [
+    cacheExec($conn, 'nsSetMulti', 'test', [
+        'a' => 123,
+        'b' => 'hello',
+        'c' => true
+    ]);
+
+    cacheExec($conn, 'nsGetMulti', 'test', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'nsSetMultiString', 'test', [
+        'a' => '123',
+        'b' => 'hello',
+        'c' => 'true'
+    ]);
+
+    cacheExec($conn, 'nsGetMultiString', 'test', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'nsSetMultiInt', 'test', [
+        'a' => 5,
+        'b' => 1,
+        'c' => 4
+    ]);
+
+    cacheExec($conn, 'nsGetMultiInt', 'test', [
+        'a', 'b', 'c'
+    ]);
+
+    cacheExec($conn, 'nsSetMultiFloat', 'test', [
+        'a' => 5.6,
+        'b' => 1.5,
+        'c' => 4.9
+    ]);
+
+    cacheExec($conn, 'nsGetMultiFloat', 'test', [
         'a', 'b', 'c'
     ]);
 

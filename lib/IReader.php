@@ -65,24 +65,29 @@ interface IReader extends IBaseClient
     public function getMulti(array $keys, $default = null): array;
 
     /**
-     * Get values of multi-string-items into an array of PHP value, from cache.
+     * Get values of multi-string-items into an array of PHP value, from
+     * cache.
      *
      * This is the multi-get edition of method get.
      *
      * @param array $keys       The keys of items to get
-     * @param mixed $default    The default value of every item if any an
+     * @param string $default   The default value of every item if any an
      *                          item not found
      * @return array
      */
-    public function getMultiString(array $keys, string $default = null): array;
+    public function getMultiString(
+        array $keys,
+        string $default = null
+    ): array;
 
     /**
-     * Get values of multi-integer-items into an array of PHP value, from cache.
+     * Get values of multi-integer-items into an array of PHP value, from
+     * cache.
      *
      * This is the multi-get edition of method get.
      *
      * @param array $keys       The keys of items to get
-     * @param mixed $default    The default value of every item if any an
+     * @param int $default      The default value of every item if any an
      *                          item not found
      * @return array
      */
@@ -94,7 +99,7 @@ interface IReader extends IBaseClient
      * This is the multi-get edition of method get.
      *
      * @param array $keys       The keys of items to get
-     * @param mixed $default    The default value of every item if any an
+     * @param float $default    The default value of every item if any an
      *                          item not found
      * @return array
      */
@@ -160,5 +165,64 @@ interface IReader extends IBaseClient
      *                          item not found
      * @return array
      */
-    public function nsGetMulti(string $ns, array $keys, $default = null): array;
+    public function nsGetMulti(
+        string $ns,
+        array $keys,
+        $default = null
+    ): array;
+
+    /**
+     * Get values of multi-string-items into an array of PHP value, from a
+     * cache namespace.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param string $ns        The namespace of item
+     * @param array $keys       The keys of items to get
+     * @param string $default   The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function nsGetMultiString(
+        string $ns,
+        array $keys,
+        string $default = null
+    ): array;
+
+    /**
+     * Get values of multi-integer-items into an array of PHP value, from a
+     * cache namespace.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param string $ns        The namespace of item
+     * @param array $keys       The keys of items to get
+     * @param int $default      The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function nsGetMultiInt(
+        string $ns,
+        array $keys,
+        int $default = null
+    ): array;
+
+    /**
+     * Get values of multi-float-items into an array of PHP value, from a
+     * cache namespace.
+     *
+     * This is the multi-get edition of method get.
+     *
+     * @param string $ns        The namespace of item
+     * @param array $keys       The keys of items to get
+     * @param float $default    The default value of every item if any an
+     *                          item not found
+     * @return array
+     */
+    public function nsGetMultiFloat(
+        string $ns,
+        array $keys,
+        float $default = null
+    ): array;
+
 }

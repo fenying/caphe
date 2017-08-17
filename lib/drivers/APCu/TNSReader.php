@@ -52,7 +52,11 @@ trait TNSReader
         return apcu_exists("{$lock}/{$key}");
     }
 
-    public function nsGetMulti(string $ns, array $keys, $default = null): array
+    public function nsGetMulti(
+        string $ns,
+        array $keys,
+        $default = null
+    ): array
     {
         $lock = $this->_nsGetNSLock($ns);
 
@@ -72,6 +76,123 @@ trait TNSReader
             foreach ($keyMaps as $nsKey => $key) {
 
                 $ret[$key] = $result[$nsKey] ?? $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        unset($keyMaps);
+
+        return $ret;
+    }
+
+    public function nsGetMultiString(
+        string $ns,
+        array $keys,
+        string $default = null
+    ): array
+    {
+        $lock = $this->_nsGetNSLock($ns);
+
+        $keyMaps = [];
+
+        foreach ($keys as $key) {
+
+            $keyMaps["{$lock}/{$key}"] = $key;
+        }
+
+        $result = apcu_fetch(array_keys($keyMaps), $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keyMaps as $nsKey => $key) {
+
+                $ret[$key] = isset($result[$nsKey]) ? (string)$result[$nsKey] : $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        unset($keyMaps);
+
+        return $ret;
+    }
+
+    public function nsGetMultiInt(
+        string $ns,
+        array $keys,
+        int $default = null
+    ): array
+    {
+        $lock = $this->_nsGetNSLock($ns);
+
+        $keyMaps = [];
+
+        foreach ($keys as $key) {
+
+            $keyMaps["{$lock}/{$key}"] = $key;
+        }
+
+        $result = apcu_fetch(array_keys($keyMaps), $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keyMaps as $nsKey => $key) {
+
+                $ret[$key] = isset($result[$nsKey]) ? (int)$result[$nsKey] : $default;
+            }
+        }
+        else {
+
+            foreach ($keys as $key) {
+
+                $ret[$key] = $default;
+            }
+        }
+
+        unset($keyMaps);
+
+        return $ret;
+    }
+
+    public function nsGetMultiFloat(
+        string $ns,
+        array $keys,
+        float $default = null
+    ): array
+    {
+        $lock = $this->_nsGetNSLock($ns);
+
+        $keyMaps = [];
+
+        foreach ($keys as $key) {
+
+            $keyMaps["{$lock}/{$key}"] = $key;
+        }
+
+        $result = apcu_fetch(array_keys($keyMaps), $success);
+
+        if ($success) {
+
+            $ret = [];
+
+            foreach ($keyMaps as $nsKey => $key) {
+
+                $ret[$key] = isset($result[$nsKey]) ? (float)$result[$nsKey] : $default;
             }
         }
         else {

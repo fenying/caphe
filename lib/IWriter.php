@@ -352,7 +352,12 @@ interface IWriter extends IBaseClient
      *   Return true if the new item is created, or return false if the item
      *   already exists.
      */
-    public function nsAdd(string $ns, string $key, $val, int $ttl = null): bool;
+    public function nsAdd(
+        string $ns,
+        string $key,
+        $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To create a new item as a raw string, in a specific namespace.
@@ -373,7 +378,12 @@ interface IWriter extends IBaseClient
      *   Return true if the new item is created, or return false if the item
      *   already exists.
      */
-    public function nsAddString(string $ns, string $key, string $val, int $ttl = null): bool;
+    public function nsAddString(
+        string $ns,
+        string $key,
+        string $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To create a new item as an integer, in a specific namespace.
@@ -394,7 +404,12 @@ interface IWriter extends IBaseClient
      *   Return true if the new item is created, or return false if the item
      *   already exists.
      */
-    public function nsAddInt(string $ns, string $key, int $val, int $ttl = null): bool;
+    public function nsAddInt(
+        string $ns,
+        string $key,
+        int $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To create a new item as an float value, in a specific namespace.
@@ -415,7 +430,12 @@ interface IWriter extends IBaseClient
      *   Return true if the new item is created, or return false if the item
      *   already exists.
      */
-    public function nsAddFloat(string $ns, string $key, float $val, int $ttl = null): bool;
+    public function nsAddFloat(
+        string $ns,
+        string $key,
+        float $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To set the value of an item, in a specific namespace.
@@ -437,7 +457,12 @@ interface IWriter extends IBaseClient
      *   Return true if the value of item is written successfully, or return
      *   false.
      */
-    public function nsSet(string $ns, string $key, $val, int $ttl = null): bool;
+    public function nsSet(
+        string $ns,
+        string $key,
+        $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To set the value of an item as a raw string, in a specific namespace.
@@ -458,7 +483,12 @@ interface IWriter extends IBaseClient
      *   Return true if the value of item is written successfully, or return
      *   false.
      */
-    public function nsSetString(string $ns, string $key, string $val, int $ttl = null): bool;
+    public function nsSetString(
+        string $ns,
+        string $key,
+        string $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To set the value of an item as an integer, in a specific namespace.
@@ -479,7 +509,12 @@ interface IWriter extends IBaseClient
      *   Return true if the value of item is written successfully, or return
      *   false.
      */
-    public function nsSetInt(string $ns, string $key, int $val, int $ttl = null): bool;
+    public function nsSetInt(
+        string $ns,
+        string $key,
+        int $val,
+        int $ttl = null
+    ): bool;
 
     /**
      * To set the value of an item as an float value, in a specific namespace.
@@ -500,7 +535,109 @@ interface IWriter extends IBaseClient
      *   Return true if the value of item is written successfully, or return
      *   false.
      */
-    public function nsSetFloat(string $ns, string $key, float $val, int $ttl = null): bool;
+    public function nsSetFloat(
+        string $ns,
+        string $key,
+        float $val,
+        int $ttl = null
+    ): bool;
+
+    /**
+     * To set the multi-items in a hash table, in a specific namespace.
+     *
+     * The value of item will be serialized by PHP, before being stored
+     * into cache.
+     *
+     * Thus only methods **get** and **getMulti** can read this item properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param string $ns        The namespace of the target item.
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function nsSetMulti(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool;
+
+    /**
+     * To set the multi-string-items in a hash table, in a specific namespace.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param string $ns        The namespace of the target item.
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function nsSetMultiString(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool;
+
+    /**
+     * To set the multi-integer-items in a hash table, in a specific
+     * namespace.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param string $ns        The namespace of the target item.
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function nsSetMultiInt(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool;
+
+    /**
+     * To set the multi-float-items in a hash table, in a specific namespace.
+     *
+     * The value must be string so it will be written into cache directly,
+     * without being serialized.
+     *
+     * But only method **getString** can read it properly.
+     *
+     * When the argument $ttl is set, the TTL of item will be set.
+     *
+     * @param string $ns        The namespace of the target item.
+     * @param array $items      The key-value items to be set.
+     * @param int|null $ttl     the TTL of the target item
+     *
+     * @return bool
+     *   Return true if the value of item is written successfully, or return
+     *   false.
+     */
+    public function nsSetMultiFloat(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool;
 
     /**
      * Check and set an item as an integer, in a specific namespace.
@@ -520,11 +657,17 @@ interface IWriter extends IBaseClient
      *   Return true if the new value of item is written successfully, or
      *   return false.
      */
-    public function nsCAS(string $ns, string $key, int $current, int $new): bool;
+    public function nsCAS(
+        string $ns,
+        string $key,
+        int $current,
+        int $new
+    ): bool;
 
     /**
-     * Increase an item by specific steps, in a specific namespace. If the item
-     * does not exist, it will be initialized as 0 before being increased.
+     * Increase an item by specific steps, in a specific namespace. If the
+     * item does not exist, it will be initialized as 0 before being
+     * increased.
      *
      * The item to be decreased must be created by methods such as
      * **nsAddInt**, **nsSetInt**, **nsAddFloat** and **nsSetFloat**, because
@@ -542,8 +685,9 @@ interface IWriter extends IBaseClient
     public function nsIncrease(string $ns, string $key, int $step = 1): int;
 
     /**
-     * Decrease an item by specific steps, in a specific namespace. If the item
-     * does not exist, it will be initialized as 0 before being decreased.
+     * Decrease an item by specific steps, in a specific namespace. If the
+     * item does not exist, it will be initialized as 0 before being
+     * decreased.
      *
      * The item to be decreased must be created by methods such as
      * **nsAddInt**, **nsSetInt**, **nsAddFloat** and **nsSetFloat**, because

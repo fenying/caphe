@@ -9,6 +9,14 @@
     - `getMultiString`
     - `getMultiInt`
     - `getMultiFloat`
+    - `setMulti`
     - `setMultiString`
     - `setMultiInt`
     - `setMultiFloat`
+    - `nsGetMultiString`
+    - `nsGetMultiInt`
+    - `nsGetMultiFloat`
+    - `nsSetMulti`
+    - `nsSetMultiString`
+    - `nsSetMultiInt`
+    - `nsSetMultiFloat`

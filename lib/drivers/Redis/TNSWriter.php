@@ -293,4 +293,160 @@ trait TNSWriter
     {
         return $this->_nsRemoveLock($ns);
     }
+
+    public function nsSetMulti(string $ns, array $items, int $ttl = null): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex(
+                    "{$lockedPrefix}/{$key}",
+                    $ttl,
+                    serialize($val)
+                );
+            }
+
+            unset($items);
+
+            $conn->exec();
+        }
+        else {
+
+            $target = [];
+
+            foreach ($items as $key => $val) {
+
+                $target["{$lockedPrefix}/{$key}"] = serialize($val);
+            }
+
+            unset($items);
+
+            $this->_writeConn->mSet($target);
+        }
+
+        return true;
+    }
+
+    public function nsSetMultiString(string $ns, array $items, int $ttl = null): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex(
+                    "{$lockedPrefix}/{$key}",
+                    $ttl,
+                    $val
+                );
+            }
+
+            unset($items);
+
+            $conn->exec();
+        }
+        else {
+
+            $target = [];
+
+            foreach ($items as $key => $val) {
+
+                $target["{$lockedPrefix}/{$key}"] = $val;
+            }
+
+            unset($items);
+
+            $this->_writeConn->mSet($target);
+        }
+
+        return true;
+    }
+
+    public function nsSetMultiInt(string $ns, array $items, int $ttl = null): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex(
+                    "{$lockedPrefix}/{$key}",
+                    $ttl,
+                    (int)$val
+                );
+            }
+
+            unset($items);
+
+            $conn->exec();
+        }
+        else {
+
+            $target = [];
+
+            foreach ($items as $key => $val) {
+
+                $target["{$lockedPrefix}/{$key}"] = (int)$val;
+            }
+
+            unset($items);
+
+            $this->_writeConn->mSet($target);
+        }
+
+        return true;
+    }
+
+    public function nsSetMultiFloat(string $ns, array $items, int $ttl = null): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        if ($ttl !== null) {
+
+            $conn = $this->_writeConn;
+            $conn->pipeline();
+
+            foreach ($items as $key => $val) {
+
+                $conn->setex(
+                    "{$lockedPrefix}/{$key}",
+                    $ttl,
+                    (float)$val
+                );
+            }
+
+            unset($items);
+
+            $conn->exec();
+        }
+        else {
+
+            $target = [];
+
+            foreach ($items as $key => $val) {
+
+                $target["{$lockedPrefix}/{$key}"] = (float)$val;
+            }
+
+            unset($items);
+
+            $this->_writeConn->mSet($target);
+        }
+
+        return true;
+    }
 }

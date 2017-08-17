@@ -133,7 +133,6 @@ trait TWriter
         int $ttl = null
     ): bool
     {
-
         if ($ttl !== null) {
 
             $conn = $this->_writeConn;
@@ -164,7 +163,6 @@ trait TWriter
         int $ttl = null
     ): bool
     {
-
         if ($ttl !== null) {
 
             $conn = $this->_writeConn;
@@ -172,7 +170,7 @@ trait TWriter
 
             foreach ($items as $key => $val) {
 
-                $conn->setex($key, $ttl, $val);
+                $conn->setex($key, $ttl, (string)$val);
             }
 
             $conn->exec();
@@ -190,7 +188,6 @@ trait TWriter
         int $ttl = null
     ): bool
     {
-
         if ($ttl !== null) {
 
             $conn = $this->_writeConn;
@@ -198,7 +195,7 @@ trait TWriter
 
             foreach ($items as $key => $val) {
 
-                $conn->setex($key, $ttl, $val);
+                $conn->setex($key, $ttl, (int)$val);
             }
 
             $conn->exec();
@@ -216,7 +213,6 @@ trait TWriter
         int $ttl = null
     ): bool
     {
-
         if ($ttl !== null) {
 
             $conn = $this->_writeConn;
@@ -224,7 +220,7 @@ trait TWriter
 
             foreach ($items as $key => $val) {
 
-                $conn->setex($key, $ttl, $val);
+                $conn->setex($key, $ttl, (float)$val);
             }
 
             $conn->exec();

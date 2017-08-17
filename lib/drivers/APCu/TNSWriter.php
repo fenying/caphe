@@ -188,4 +188,84 @@ trait TNSWriter
     {
         return $this->_nsRemoveLock($ns);
     }
+
+    public function nsSetMulti(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        $target = [];
+
+        foreach ($items as $key => $value) {
+
+            $target["{$lockedPrefix}/{$key}"] = $value;
+        }
+
+        unset($items);
+
+        return count(apcu_store($target, null, $ttl ?? 0)) === 0;
+    }
+
+    public function nsSetMultiString(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        $target = [];
+
+        foreach ($items as $key => $value) {
+
+            $target["{$lockedPrefix}/{$key}"] = (string)$value;
+        }
+
+        unset($items);
+
+        return count(apcu_store($target, null, $ttl ?? 0)) === 0;
+    }
+
+    public function nsSetMultiInt(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        $target = [];
+
+        foreach ($items as $key => $value) {
+
+            $target["{$lockedPrefix}/{$key}"] = (int)$value;
+        }
+
+        unset($items);
+
+        return count(apcu_store($target, null, $ttl ?? 0)) === 0;
+    }
+
+    public function nsSetMultiFloat(
+        string $ns,
+        array $items,
+        int $ttl = null
+    ): bool
+    {
+        $lockedPrefix = $this->_nsGetNSLock($ns);
+
+        $target = [];
+
+        foreach ($items as $key => $value) {
+
+            $target["{$lockedPrefix}/{$key}"] = (float)$value;
+        }
+
+        unset($items);
+
+        return count(apcu_store($target, null, $ttl ?? 0)) === 0;
+    }
 }
