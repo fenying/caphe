@@ -3,6 +3,7 @@
     "description" : "A simple read-write separated cache library for PHP.",
     "type" : "library",
     "license" : "Apache-2.0",
+    "version": "0.1.0-a2",
     "autoload" : {
         "psr-4" : {
             "Caphe\\" : "lib",
