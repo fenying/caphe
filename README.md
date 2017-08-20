@@ -13,7 +13,7 @@ Currently only APCu and Redis is supported.
 It's recommanded to install by composer:
 
 ```sh
-composer require fenying/caphe
+composer require litert/caphe
 ```
 
 Or just git clone this repository, and put the **lib** directory into you 

@@ -1,5 +1,5 @@
 {
-    "name" : "fenying/caphe",
+    "name" : "litert/caphe",
     "description" : "A simple read-write separated cache library for PHP.",
     "type" : "library",
     "license" : "Apache-2.0",
@@ -14,8 +14,8 @@
     "homepage" : "https://fenying.net",
     "support" : {
         "email" : "i.am.x.fenying@gmail.com",
-        "issues" : "https://github.com/fenying/caphe/issues",
-        "source" : "https://github.com/fenying/caphe/"
+        "issues" : "https://github.com/litert/caphe/issues",
+        "source" : "https://github.com/litert/caphe/"
     },
     "require": {
         "php": ">=7.0.0"
@@ -32,7 +32,7 @@
     ],
     "repositories" : [{
             "type" : "git",
-            "url" : "git@github.com:fenying/caphe.git",
+            "url" : "git@github.com:litert/caphe.git",
             "name" : "Caphe"
         }
     ],
